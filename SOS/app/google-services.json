@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "816035942717",
+    "firebase_url": "https://sossafety-ce505.firebaseio.com",
+    "project_id": "sossafety-ce505",
+    "storage_bucket": "sossafety-ce505.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816035942717:android:58a85263697bd56b",
+        "android_client_info": {
+          "package_name": "com.example.tan089.sos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816035942717-3pf1k99jei8s6bbsvl6mp2s06gq4pjvf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tan089.sos",
+            "certificate_hash": "1df1de5f4883d935d94796bcc2131ce302304b00"
+          }
+        },
+        {
+          "client_id": "816035942717-klqvtlisd18tecgrn659tkll209it6b0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZKuA8b1418ASMT6UnwPNsi8xerkelJ7U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816035942717-klqvtlisd18tecgrn659tkll209it6b0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
