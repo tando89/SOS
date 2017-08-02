@@ -38,7 +38,7 @@ public class home extends Fragment {
             for(String key : getActivity().getIntent().getExtras().keySet())
             {
                 if(key.equals("message"))
-                    Message.setText("Message:" + " " + getActivity().getIntent().getExtras().getString(key));
+                    Message.setText("Message from server:" + " " + getActivity().getIntent().getExtras().getString(key));
             }
         }
         getUpdates = (Button) viewHome.findViewById(R.id.getUpdates);

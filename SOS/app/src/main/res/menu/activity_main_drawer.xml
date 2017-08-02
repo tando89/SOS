@@ -14,9 +14,9 @@
             android:title="About Us">
         </item>
         <item
-            android:id="@+id/EmergencyReport"
+            android:id="@+id/AnonymousReport"
             android:icon="@drawable/ic_add_alert_black_24px"
-            android:title="Emergency Report" />
+            android:title="Anonymous Email Report" />
         <item
             android:id="@+id/ResourceInfo"
             android:icon="@drawable/ic_find_in_page_black_24px"

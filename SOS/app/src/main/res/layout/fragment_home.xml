@@ -30,6 +30,7 @@
             android:textColor="#000"
             android:textSize="20dp"
             android:id="@+id/msgText"
+            android:text="Message from server:"
             android:layout_margin="15dp"/>
     </LinearLayout>
     <LinearLayout

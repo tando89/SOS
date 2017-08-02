@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.AboutUs:
                 fragment = new aboutUs();
                 break;
-            case R.id.EmergencyReport:
-                fragment = new emergencyReport();
+            case R.id.AnonymousReport:
+                fragment = new AnonymousEmailReport();
                 break;
             case R.id.ResourceInfo:
                 fragment = new resourceInfo();

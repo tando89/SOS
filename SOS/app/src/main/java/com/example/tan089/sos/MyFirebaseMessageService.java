@@ -25,7 +25,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         //TODO : Handle FCM messages here
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message:" + remoteMessage.getNotification().getBody());
-        //createNotification(remoteMessage.getNotification().getBody());
+        createNotification(remoteMessage.getNotification().getBody());
         if (remoteMessage.getData().size() > 0) {
             //set the key from FCM console to "message"
             String message = remoteMessage.getData().get("message");
@@ -45,7 +45,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder( this)
-                .setSmallIcon(R.mipmap.ic_alarm)
+                .setVibrate(new long[]{3000, 3000, 2000, 2000, 1000})
+                .setSmallIcon(R.drawable.sos_launch_icon)
                 .setContentText(messageBody)
                 .setAutoCancel( true )
                 .setSound(notificationSoundURI);
