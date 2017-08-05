@@ -25,7 +25,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         //TODO : Handle FCM messages here
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message:" + remoteMessage.getNotification().getBody());
-        createNotification(remoteMessage.getNotification().getBody());
+
         if (remoteMessage.getData().size() > 0) {
             //set the key from FCM console to "message"
             String message = remoteMessage.getData().get("message");
@@ -34,6 +34,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
             intent.putExtra("message", message);
             LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
             localBroadcastManager.sendBroadcast(intent);
+            createNotification(remoteMessage.getNotification().getBody());
         }
     }
     private void createNotification( String messageBody) {
