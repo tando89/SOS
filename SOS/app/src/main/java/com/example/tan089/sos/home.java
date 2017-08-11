@@ -109,7 +109,7 @@ public class home extends Fragment {
                                         //login successfully
                                         else {
                                             Toast.makeText(getActivity().getApplicationContext(), "Tap buttons to report an emergency", Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(getActivity(), GetUpdates.class);
+                                            Intent intent = new Intent(getActivity(), ReportPage.class);
                                             startActivity(intent);
                                         }
                                     } catch (JSONException e) {

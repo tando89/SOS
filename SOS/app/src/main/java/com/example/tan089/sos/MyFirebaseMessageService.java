@@ -14,6 +14,9 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import static android.app.Notification.DEFAULT_SOUND;
+import static android.app.Notification.DEFAULT_VIBRATE;
+
 /**
  * Created by tan089 on 7/20/2017.
  */
@@ -45,16 +48,15 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 PendingIntent.FLAG_ONE_SHOT);*/
 
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder( this)
+        NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
                 .setVibrate(new long[]{3000, 3000, 2000, 2000, 1000})
                 .setSmallIcon(R.drawable.sos_launch_icon)
                 .setContentText(messageBody)
                 .setAutoCancel( true )
                 .setSound(notificationSoundURI);
                 //.setContentIntent(resultIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationBuilder.setDefaults(DEFAULT_SOUND | DEFAULT_VIBRATE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, mNotificationBuilder.build());
     }
