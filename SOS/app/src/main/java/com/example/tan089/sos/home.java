@@ -8,28 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.example.tan089.sos.R.layout.fragment_home;
 
@@ -39,12 +23,10 @@ import static com.example.tan089.sos.R.layout.fragment_home;
 
 public class home extends Fragment {
 
-    Button getUpdates;
+    Button getMessage;
     TextView Message;
-    Button login_button;
-    EditText Passcode;
-    String passcodeString;
-    String login_url = "https://schoolserver-tand089.c9users.io/Validation.php";
+    ImageButton alarmButton;
+
 
     @Nullable
     @Override
@@ -55,8 +37,7 @@ public class home extends Fragment {
         View viewHome =  inflater.inflate(fragment_home, container, false);
         //Casting variables
         Message = (TextView) viewHome.findViewById(R.id.msgText);
-        login_button = (Button) viewHome.findViewById(R.id.button_login);
-        Passcode = (EditText) viewHome.findViewById(R.id.login_passcode);
+
         LocalBroadcastManager.getInstance(this.getActivity()).registerReceiver(mHandler, new IntentFilter("com.example.tan089.sos_Message"));
 
         if (getActivity().getIntent().getExtras() != null) {
@@ -66,74 +47,21 @@ public class home extends Fragment {
                     Message.setText("Message from server:" + " " + getActivity().getIntent().getExtras().getString(key));
             }
         }
-        getUpdates = (Button) viewHome.findViewById(R.id.getUpdates);
-        getUpdates.setOnClickListener(new View.OnClickListener() {
+        getMessage = (Button) viewHome.findViewById(R.id.getMessage);
+        getMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GetUpdates.class);
+                Intent intent = new Intent(getActivity(), GetLiveMessage.class);
                 startActivity(intent);
             }
         });
 
-        //login button
-        login_button.setOnClickListener(new View.OnClickListener() {
+        alarmButton = (ImageButton) viewHome.findViewById(R.id.alarmBnt);
+        alarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Hide virtual keyboard after click the button
-                InputMethodManager inputManager = (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                //convert Passcode from edittext to string
-                passcodeString = Passcode.getText().toString();
-                //Validate users enter a right format of passcode
-                if (passcodeString.equals("")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Please enter passcode*", Toast.LENGTH_LONG).show();
-                }
-                //Validate passcode from server
-                else {
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, login_url,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONArray jsonArray = new JSONArray(response);
-                                        JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                        //"code" is the key from json object on server
-                                        String code = jsonObject.getString("code");
-                                        //validate login passcode fail/pass
-                                        if (code.equals("login_failed")) {
-                                            Toast.makeText(getActivity().getApplicationContext(), "Passcode is wrong", Toast.LENGTH_LONG).show();
-                                        }
-                                        //login successfully
-                                        else {
-                                            Toast.makeText(getActivity().getApplicationContext(), "Tap buttons to report an emergency", Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(getActivity(), ReportPage.class);
-                                            startActivity(intent);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Error!", Toast.LENGTH_LONG).show();
-                            error.printStackTrace();
-                        }
-                    })
-                    {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> params = new HashMap<String, String>();
-                            //"username" is the key name from mySQL server
-                            params.put("passcode", passcodeString);
-                            return params;
-                        }
-                    };
-                    MySingleton.getInstance(getActivity()).addTorequestqueue(stringRequest);
-                }
+                Intent intent = new Intent(getActivity(), confirmEmergencyPage.class);
+                startActivity(intent);
             }
         });
         return viewHome;

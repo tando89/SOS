@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="#ff0000">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -10,52 +11,26 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_margin="10dp">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/roundbell"
+            android:background="#ff0000"
+            android:id="@+id/alarmBnt"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to SOS. Please enter the passcode to report an emergency."
-            android:layout_margin="10dp"
-            android:textColor="#000"
+            android:text="SOUND THE ALARM"
+            android:textColor="#fff"
+            android:textSize="20dp"
             android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-        <LinearLayout
-            android:layout_marginTop="30dp"
-            android:paddingLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textColor="#000"
-                android:text="Passcode: "
-                android:textStyle="bold"
-                android:textSize="20dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
 
-            <EditText
-                android:id="@+id/login_passcode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/subject01"
-                android:inputType="textPassword"
-                android:hint="passcode*"/>
-        </LinearLayout>
-        <Button
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/colorPrimary"
-            android:textColor="#FFF"
-            android:text="Validate"
-            android:id="@+id/button_login"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#000"
+            android:textColor="#fff"
             android:textSize="20dp"
             android:id="@+id/msgText"
             android:text="Message from server:"
@@ -70,11 +45,12 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get Updates"
+            android:text="Live message"
+            android:textSize="20dp"
             android:layout_weight="1"
-            android:background="#ff0000"
+            android:background="#A9A9A9"
             android:textColor="#fff"
-            android:id="@+id/getUpdates"/>
+            android:id="@+id/getMessage"/>
     </LinearLayout>
 
 </LinearLayout>
