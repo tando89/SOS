@@ -23,7 +23,7 @@ public class ReportPage extends AppCompatActivity {
         findViewById(R.id.fightingBnt).setOnClickListener(buttonsReport);
         findViewById(R.id.StalkBnt).setOnClickListener(buttonsReport);
         findViewById(R.id.bioHazardBnt).setOnClickListener(buttonsReport);
-        findViewById(R.id.TornatoBnt).setOnClickListener(buttonsReport);
+        findViewById(R.id.TornadoBnt).setOnClickListener(buttonsReport);
         findViewById(R.id.IntruderBnt).setOnClickListener(buttonsReport);
     }
     public View.OnClickListener buttonsReport = new View.OnClickListener() {
@@ -50,8 +50,8 @@ public class ReportPage extends AppCompatActivity {
                 case R.id.bioHazardBnt:
                     msg = "There is a biohazard in campus";
                     break;
-                case R.id.TornatoBnt:
-                    msg = "There is a tornato in campus";
+                case R.id.TornadoBnt:
+                    msg = "There is a tornado in campus";
                     break;
                 case R.id.IntruderBnt:
                     msg = "There is an intruder in campus";
