@@ -32,12 +32,13 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             //set the key from FCM console to "message"
             String message = remoteMessage.getData().get("message");
+            String messageNotification = remoteMessage.getNotification().getBody();
             //Use Intent to send the message from FCM notification to Home page as a textView
             Intent intent = new Intent ("com.example.tan089.sos_Message");
             intent.putExtra("message", message);
             LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
             localBroadcastManager.sendBroadcast(intent);
-            createNotification(remoteMessage.getNotification().getBody());
+            createNotification(messageNotification);
         }
     }
     private void createNotification( String messageBody) {

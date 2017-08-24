@@ -1,5 +1,7 @@
 package com.example.tan089.sos;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +14,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     // Constants
@@ -100,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             // TODO: FirebaseUser() here
             createFirebaseUser();
+
         }
     }
 
@@ -129,18 +134,41 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!task.isSuccessful()) {
                     Log.d("SoSChat", "user creation failed");
                     showErrorDialog("Registration failed");
+                } else {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("SoSChat", "Email sent.");
+                                Toast.makeText(RegisterActivity.this, "Verification email sent. Please verify your email!", Toast.LENGTH_LONG).show();
+                                saveDisplayName();
+                                Intent intent = new Intent(RegisterActivity.this, GetLiveMessage.class);
+                                finish();
+                                startActivity(intent);
+                            }
+                        }
+                    });
+
                 }
+
             }
         });
     }
 
     // TODO: Save the display name to Shared Preferences
-
+    private void saveDisplayName() {
+        String displayName = mUsernameView.getText().toString();
+        //use the key CHAT_PREFS
+        SharedPreferences prefs = getSharedPreferences(CHAT_PREFS, 0);
+        //preference object first to be edit, putString perform data as a string value
+        prefs.edit().putString(DISPLAY_NAME_KEY, displayName).apply();
+    }
 
     // TODO: Create an alert dialog to show in case registration failed
     private void showErrorDialog(String message) {
         new AlertDialog.Builder(this)
-                .setTitle("Error!")
+                .setTitle("SOS team")
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)

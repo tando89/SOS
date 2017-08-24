@@ -45,9 +45,15 @@
         <activity
             android:name=".confirmEmergencyPage"
             android:label="SOS" />
-        <activity android:name=".RegisterActivity"
+        <activity
+            android:name=".RegisterActivity"
             android:label="SOS Register"
-            android:parentActivityName=".GetLiveMessage"></activity>
+            android:parentActivityName=".GetLiveMessage" />
+        <activity android:name=".SosForumChat" />
+        <activity android:name=".ForgotPassword"
+            android:label="Reset Password"
+            android:parentActivityName=".GetLiveMessage">
+        </activity>
     </application>
 
 </manifest>

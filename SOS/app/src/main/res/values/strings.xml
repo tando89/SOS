@@ -23,4 +23,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name = "forgot_pw_instruction">"Please enter the email that you used to create an account with SOS."
+    </string>
 </resources>

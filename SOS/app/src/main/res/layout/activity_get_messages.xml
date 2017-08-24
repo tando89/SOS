@@ -60,6 +60,17 @@
         android:onClick="signInExistingUser"
         android:text="@string/action_sign_in_short"
         android:textStyle="bold"/>
+    <Button
+        android:id="@+id/forgot_pw_button"
+        style="?android:textAppearanceMedium"
+        android:background="#A9A9A9"
+        android:textColor="#000"
+        android:onClick="userPwReset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Forgot Password"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/login_register_button"
