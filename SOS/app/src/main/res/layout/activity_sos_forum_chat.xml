@@ -1,12 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:background="#e1e1ea"
     tools:context="com.example.tan089.sos.SosForumChat">
-    <TextView
-        android:layout_width="wrap_content"
+
+    <ListView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello Chat"/>
-</android.support.constraint.ConstraintLayout>
+        android:id="@+id/chat_list_view"
+        android:layout_alignParentTop="true"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_above="@+id/listFooter"
+        android:transcriptMode="alwaysScroll">
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/listFooter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+        <EditText
+            android:id="@+id/messageInput"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:textColorHint="#bfbfbf"
+            android:hint="@string/prompt_msg"
+            android:imeActionLabel="@string/action_send"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:maxLines="1"
+            />
+        <ImageButton
+            android:id="@+id/sendBnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_send"
+            android:padding="10dp"
+            android:contentDescription="@string/action_send"/>
+    </LinearLayout>
+</RelativeLayout>

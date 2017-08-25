@@ -74,10 +74,10 @@ public class GetLiveMessage extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("RealtimeChat", "signInWithEmail() onComplete: " + task.isSuccessful());
+                Log.d("SOS message", "signInWithEmail() onComplete: " + task.isSuccessful());
 
                 if(!task.isSuccessful()) {
-                    Log.d("RealtimeChat", "Problem signing: " + task.getException());
+                    Log.d("SOS message", "Problem signing: " + task.getException());
                     //display error in dialog box
                     showErrorDialog("Problem with signing in!");
                 } else {
