@@ -1,65 +1,48 @@
 package com.example.tan089.sos;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
+
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
-    // Constants
-    public static final String CHAT_PREFS = "ChatPrefs";
-    public static final String DISPLAY_NAME_KEY = "username";
 
-    // TODO: Add member variables here:
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private AutoCompleteTextView mUsernameView;
-    private EditText mPasswordView;
-    private EditText mConfirmPasswordView;
+    private EditText email,name,password;
+    DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
+    private DatabaseReference userIdRef;
+    ProgressDialog registerDialog;
 
-    // Firebase instance variables
-    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.register_email);
-        mPasswordView = (EditText) findViewById(R.id.register_password);
-        mConfirmPasswordView = (EditText) findViewById(R.id.register_confirm_password);
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.register_username);
-
-        // Keyboard sign in action
-        mConfirmPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.register_form_finished || id == EditorInfo.IME_NULL) {
-                    attemptRegistration();
-                    return true;
-                }
-                return false;
-            }
-        });
+        email=(EditText)findViewById(R.id.email);
+        name=(EditText)findViewById(R.id.name);
+        password=(EditText)findViewById(R.id.password);
+        //Create firebase database
+        databaseReference= FirebaseDatabase.getInstance().getReference().child("chat_users");
+        //Get hold of an instance of FirebaseAuth
+        mAuth=FirebaseAuth.getInstance();
+        registerDialog=new ProgressDialog(this);
+        registerDialog.setMessage("Registering..");
 
         // TODO: Get hold of an instance of FirebaseAuth
-        mAuth = FirebaseAuth.getInstance();
     }
     // Executed when Sign Up button is pressed.
     public void signUp(View v) {
@@ -69,31 +52,31 @@ public class RegisterActivity extends AppCompatActivity {
     private void attemptRegistration() {
 
         // Reset errors displayed in the form.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        email.setError(null);
+        password.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String validEmail = email.getText().toString();
+        String validPassword = password.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+        if (!isPasswordValid(validPassword)) {
+            password.setError(getString(R.string.error_invalid_password));
+            focusView = password;
             cancel = true;
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+        if (TextUtils.isEmpty(validEmail)) {
+            email.setError(getString(R.string.error_field_required));
+            focusView = email;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (!isEmailValid(validEmail)) {
+            email.setError(getString(R.string.error_invalid_email));
+            focusView = email;
             cancel = true;
         }
 
@@ -114,55 +97,34 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Add own logic to check for a valid password
-        //First get the text that user type in the confirm password
-        String confirmPassword = mConfirmPasswordView.getText().toString();
-        //only confirm when users type the same password (the input of this method)
-        return confirmPassword.equals(password) && password.length() > 7;
+        //password must contain more than 5 characters
+        return password.length() > 5;
     }
 
     // TODO: Create a Firebase user
     private void createFirebaseUser() {
-        //get text from email and pw
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        registerDialog.show();
+        String userEmail = email.getText().toString();
+        String userPassword = password.getText().toString();
         //create firebase users
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("SoSChat", "createUSer onComplete: " + task.isSuccessful());
+                Log.d("Chat", "createUSer onComplete: " + task.isSuccessful());
                 if(!task.isSuccessful()) {
-                    Log.d("SoSChat", "user creation failed");
+                    Log.d("Chat", "user creation failed");
+                    //display error in diaglog box
                     showErrorDialog("Registration failed");
                 } else {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("SoSChat", "Email sent.");
-                                Toast.makeText(RegisterActivity.this, "Verification email sent. Please verify your email!", Toast.LENGTH_LONG).show();
-                                saveDisplayName();
-                                Intent intent = new Intent(RegisterActivity.this, GetLiveMessage.class);
-                                finish();
-                                startActivity(intent);
-                            }
-                        }
-                    });
+                    registerDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Registered successfully",Toast.LENGTH_SHORT).show();
+                    userIdRef=databaseReference.child(mAuth.getCurrentUser().getUid());
+                    userIdRef.child("name").setValue(name.getText().toString());
 
                 }
-
+                registerDialog.dismiss();
             }
         });
-    }
-
-    // TODO: Save the display name to Shared Preferences
-    private void saveDisplayName() {
-        String displayName = mUsernameView.getText().toString();
-        //use the key CHAT_PREFS
-        SharedPreferences prefs = getSharedPreferences(CHAT_PREFS, 0);
-        //preference object first to be edit, putString perform data as a string value
-        prefs.edit().putString(DISPLAY_NAME_KEY, displayName).apply();
     }
 
     // TODO: Create an alert dialog to show in case registration failed

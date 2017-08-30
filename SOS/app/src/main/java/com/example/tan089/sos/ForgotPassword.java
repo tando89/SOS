@@ -38,7 +38,7 @@ public class ForgotPassword extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 Log.d("SOS", "forgot password: " + task.isSuccessful());
                 if(!task.isSuccessful()) {
-                    Log.d("SOS", "Problem signing: " + task.getException());
+                    Log.d("SOS", "Problem: " + task.getException());
                 } else {
                     Toast.makeText(ForgotPassword.this, "Reset password link has sent to your email", Toast.LENGTH_LONG).show();
                 }

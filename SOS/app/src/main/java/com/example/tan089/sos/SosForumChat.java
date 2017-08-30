@@ -1,90 +1,90 @@
 package com.example.tan089.sos;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class SosForumChat extends AppCompatActivity {
+    private EditText editText;
+    private DatabaseReference chat_data_ref;
+    private DatabaseReference user_name_ref;
+    private ListView listView;
+    private FirebaseAuth mAuth;
+    private String name="";
+    HashMap<String,String> map;
 
-    // TODO: Add member variables here:
-    private String mDisplayName;
-    private ListView mChatListView;
-    private EditText mInputText;
-    private ImageButton mSendButton;
-    private DatabaseReference mDatabaseReference;
-    private ChatListAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sos_forum_chat);
-        // TODO: Set up the display name and get the Firebase reference
-        setupDisplayName();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        mInputText = (EditText) findViewById(R.id.messageInput);
-        mSendButton = (ImageButton) findViewById(R.id.sendBnt);
-        mChatListView = (ListView) findViewById(R.id.chat_list_view);
-
-        // TODO: Send the message when the "enter" button is pressed
-        mInputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mAuth= FirebaseAuth.getInstance();
+        editText=(EditText)findViewById(R.id.edittext);
+        chat_data_ref= FirebaseDatabase.getInstance().getReference().child("chat_data");
+        user_name_ref=FirebaseDatabase.getInstance().getReference().child("chat_users").child(mAuth.getCurrentUser().getUid()).child("name");
+        listView=(ListView)findViewById(R.id.listview);
+        map=new HashMap<>();
+        user_name_ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                sendMessage();
-                return true;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                name=dataSnapshot.getValue().toString();
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
             }
         });
-        // TODO: Add an OnClickListener to the sendButton to send a message
-        mSendButton.setOnClickListener(new View.OnClickListener() {
+        FirebaseListAdapter<SosMessage> adapter=new FirebaseListAdapter<SosMessage>(
+                this,SosMessage.class,R.layout.chat_msg_row,chat_data_ref
+        ) {
             @Override
-            public void onClick(View v) {
-                sendMessage();
+            protected void populateView(View v, SosMessage model, int position) {
+                //need to seperated the row
+                TextView msg=(TextView)v.findViewById(R.id.textView1);
+                msg.setText(model.getAuthor()+" : "+model.getMessage());
             }
-        });
+        };
+        listView.setAdapter(adapter);
 
     }
-
-    // TODO: Retrieve the display name from the Shared Preferences
-    private void setupDisplayName(){
-        SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, MODE_PRIVATE);
-
-        mDisplayName = prefs.getString(RegisterActivity.DISPLAY_NAME_KEY, null);
-
-        if (mDisplayName == null) mDisplayName = "Anonymous";
+    public void send(View view) {
+        chat_data_ref.push().setValue(new SosMessage(editText.getText().toString(),name));//storing actual msg with name of the user
+        editText.setText("");//clear the msg in edittext
     }
-    private void sendMessage() {
-        Log.d("SOS: ", "Sent");
-        // TODO: Grab the text the user typed in and push the message to Firebase
-        String input = mInputText.getText().toString();
-        if (!input.equals("")) {
-            SosMessage chat = new SosMessage(input, mDisplayName);
-            mDatabaseReference.child("messages").push().setValue(chat);
-            mInputText.setText("");
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.chatmenu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.logout)
+        {
+            mAuth.signOut();//when the user clicks signout option this will executes
+            startActivity(new Intent(SosForumChat.this,GetLiveMessage.class));
+            finish();
         }
+        return super.onOptionsItemSelected(item);
     }
-    // TODO: Override the onStart() lifecycle method. Setup the adapter here.
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAdapter =  new ChatListAdapter(this, mDatabaseReference, mDisplayName);
-        mChatListView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // TODO: Remove the Firebase event listener on the adapter.
-        mAdapter.cleanup();
-
-    }
-
 }
