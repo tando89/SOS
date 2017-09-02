@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -120,13 +121,24 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Registered successfully",Toast.LENGTH_SHORT).show();
                     userIdRef=databaseReference.child(mAuth.getCurrentUser().getUid());
                     userIdRef.child("name").setValue(name.getText().toString());
-
+                    verifyEmail();
                 }
                 registerDialog.dismiss();
             }
         });
     }
-
+    // TODO: verify email
+    private void verifyEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("Testing: ", "Email sent.");
+                }
+            }
+        });
+    }
     // TODO: Create an alert dialog to show in case registration failed
     private void showErrorDialog(String message) {
         new AlertDialog.Builder(this)

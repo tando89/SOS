@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -61,8 +62,12 @@ public class SosForumChat extends AppCompatActivity {
             @Override
             protected void populateView(View v, SosMessage model, int position) {
                 //need to seperated the row
-                TextView msg=(TextView)v.findViewById(R.id.textView1);
-                msg.setText(model.getAuthor()+" : "+model.getMessage());
+                TextView author=(TextView)v.findViewById(R.id.author);
+                TextView dateAndTime = (TextView)v.findViewById(R.id.dateTime);
+                TextView msg = (TextView)v.findViewById(R.id.message);
+                author.setText(model.getAuthor());
+                dateAndTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
+                msg.setText(model.getMessage());
             }
         };
         listView.setAdapter(adapter);
