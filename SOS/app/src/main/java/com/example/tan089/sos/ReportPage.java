@@ -30,34 +30,42 @@ public class ReportPage extends AppCompatActivity {
         @Override
         public void onClick(View reportsBnt) {
             //intent to map activity?
-            Intent intent = null;
+            //Intent intent = null;
             switch (reportsBnt.getId()){
                 case R.id.gunBnt:
                     msg = "There is a shooting in campus!";
+                    moveToMap();
                     break;
                 case R.id.fireBnt:
                     msg = "There is a fire in campus!";
+                    moveToMap();
                     break;
                 case R.id.bombBnt:
                     msg = "There is a bomb threat in campus!";
+                    moveToMap();
                     break;
                 case R.id.fightingBnt:
                     msg = "There is a fight in campus";
+                    moveToMap();
                     break;
                 case R.id.StalkBnt:
                     msg = "There is a stalker in campus";
+                    moveToMap();
                     break;
                 case R.id.bioHazardBnt:
                     msg = "There is a biohazard in campus";
+                    moveToMap();
                     break;
                 case R.id.TornadoBnt:
                     msg = "There is a tornado in campus";
+                    moveToMap();
                     break;
                 case R.id.IntruderBnt:
                     msg = "There is an intruder in campus";
+                    moveToMap();
                     break;
             }
-            sendSMS(msg);
+            //sendSMS(msg);
         }
     };
     private void sendSMS(String message) {
@@ -73,5 +81,9 @@ public class ReportPage extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+    private void moveToMap() {
+        Intent confirm = new Intent(ReportPage.this, MapActivity.class);
+        startActivity(confirm);
     }
 }
