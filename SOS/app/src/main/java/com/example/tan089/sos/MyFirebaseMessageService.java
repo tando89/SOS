@@ -14,6 +14,9 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.app.Notification.DEFAULT_SOUND;
 import static android.app.Notification.DEFAULT_VIBRATE;
 
@@ -25,28 +28,50 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     private static final String TAG = "FCM";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //TODO : Handle FCM messages here
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Notification Message:" + remoteMessage.getNotification().getBody());
 
         if (remoteMessage.getData().size() > 0) {
-            //set the key from FCM console to "message"
-            String message = remoteMessage.getData().get("message");
-            String messageNotification = remoteMessage.getNotification().getBody();
-            //Use Intent to send the message from FCM notification to Home page as a textView
-            Intent intent = new Intent ("com.example.tan089.sos_Message");
-            intent.putExtra("message", message);
-            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-            localBroadcastManager.sendBroadcast(intent);
-            createNotification(messageNotification);
+            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
+            try {
+                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                sendPushNotification(json);
+            } catch (Exception e) {
+                Log.e(TAG, "Exception: " + e.getMessage());
+            }
         }
     }
+
+    private void sendPushNotification(JSONObject json) {
+        //optionally we can display the json into log
+        Log.e(TAG, "Notification JSON " + json.toString());
+        try {
+            //getting the json data
+            JSONObject data = json.getJSONObject("data");
+
+            //parsing json data
+            String title = data.getString("title");
+            String message = data.getString("message");
+            // String imageUrl = data.getString("image");
+
+            //creating MyNotificationManager object
+            MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
+
+            //creating an intent for the notification
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+
+            mNotificationManager.showSmallNotification(title, message, intent);
+        } catch (JSONException e) {
+            Log.e(TAG, "Json Exception: " + e.getMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage());
+        }
+    }
+    /* old function will be removed
     private void createNotification( String messageBody) {
-        /* Trying to intent the notification to another activity
+        *//* Trying to intent the notification to another activity
         Intent intent = new Intent(this, Updates.class );
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultIntent = PendingIntent.getActivity( this , 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);*/
+                PendingIntent.FLAG_ONE_SHOT);*//*
 
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
@@ -60,5 +85,5 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, mNotificationBuilder.build());
-    }
+    }*/
 }

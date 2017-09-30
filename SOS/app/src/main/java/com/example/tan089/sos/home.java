@@ -22,22 +22,42 @@ import static com.example.tan089.sos.R.layout.fragment_home;
  */
 
 public class home extends Fragment {
-
+   /* private Button buttonDisplayToken;
+    private TextView textViewToken;*/
     Button getMessage;
-    TextView Message;
+    //TextView Message;
     ImageButton alarmButton;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //returning our layout file
+        //returning our layout file at the bottom
         //change R.layout.yourlayoutfilename for each of your fragments
 
         View viewHome =  inflater.inflate(fragment_home, container, false);
         //Casting variables
-        Message = (TextView) viewHome.findViewById(R.id.msgText);
+        //Message = (TextView) viewHome.findViewById(R.id.msgText);
+        /*buttonDisplayToken = (Button) viewHome.findViewById(R.id.buttonDisplayToken);
+        buttonDisplayToken.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //getting token from shared preferences
+                String token = MySharedPref.getInstance(getActivity()).getDeviceToken();
 
+                //if token is not null
+                if (token != null) {
+                    //displaying the token
+                    textViewToken.setText(token);
+                } else {
+                    //if token is null that means something wrong
+                    textViewToken.setText("Token not generated");
+                }
+            }
+        });
+        textViewToken = (TextView) viewHome.findViewById(R.id.textViewToken);*/
+
+        /*//Will be
         LocalBroadcastManager.getInstance(this.getActivity()).registerReceiver(mHandler, new IntentFilter("com.example.tan089.sos_Message"));
 
         if (getActivity().getIntent().getExtras() != null) {
@@ -46,7 +66,8 @@ public class home extends Fragment {
                 if(key.equals("message"))
                     Message.setText("Message from server:" + " " + getActivity().getIntent().getExtras().getString(key));
             }
-        }
+        } //remove*/
+
         getMessage = (Button) viewHome.findViewById(R.id.getMessage);
         getMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +88,7 @@ public class home extends Fragment {
         return viewHome;
 
     }
-    //Declare the handler
+    /*//Declare the handler
     private BroadcastReceiver mHandler = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -75,13 +96,13 @@ public class home extends Fragment {
             Message.setText(MessageBody);
 
         }
-    };
+    };*/
 
-    @Override
+    /*@Override
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this.getActivity()).unregisterReceiver(mHandler);
-    }
+    }*/
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

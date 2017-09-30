@@ -19,10 +19,10 @@ public class MyFirebaseIDService extends FirebaseInstanceIdService {
         Log.d(TAG, "Refreshed Token:" + refreshedToken);
 
         // TODO: Send any registration from any device to the app servers
-        sendRegistrationToServer(refreshedToken);
+        saveToken(refreshedToken);
     }
 
-    private void sendRegistrationToServer(String token) {
-
+    private void saveToken(String token) {
+        MySharedPref.getInstance(getApplicationContext()).saveDeviceToken(token);
     }
 }
