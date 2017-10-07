@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,6 +28,7 @@ public class ReportPage extends AppCompatActivity {
     private String msg;
     private List<String> devices;
     private ProgressDialog progressDialog;
+    private Button cancelButton, getMessage;;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,23 @@ public class ReportPage extends AppCompatActivity {
         castButtons();
         devices = new ArrayList<>();
         loadRegisteredDevices();
+        cancelButton = (Button) findViewById(R.id.cancelBnt);
+        getMessage = (Button) findViewById(R.id.getMessage);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReportPage.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        getMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReportPage.this, GetLiveMessage.class);
+                startActivity(intent);
+            }
+        });
     }
     public void castButtons() {
         findViewById(R.id.gunBnt).setOnClickListener(buttonsReport);
@@ -44,6 +63,7 @@ public class ReportPage extends AppCompatActivity {
         findViewById(R.id.bioHazardBnt).setOnClickListener(buttonsReport);
         findViewById(R.id.TornadoBnt).setOnClickListener(buttonsReport);
         findViewById(R.id.IntruderBnt).setOnClickListener(buttonsReport);
+        findViewById(R.id.terroristBnt).setOnClickListener(buttonsReport);
     }
     public View.OnClickListener buttonsReport = new View.OnClickListener() {
         @Override
@@ -81,6 +101,10 @@ public class ReportPage extends AppCompatActivity {
                     break;
                 case R.id.IntruderBnt:
                     msg = "There is an intruder in campus";
+                    //moveToMap();
+                    break;
+                case R.id.terroristBnt:
+                    msg = "There are terrorists in campus";
                     //moveToMap();
                     break;
             }

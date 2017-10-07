@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class confirmEmergencyPage extends AppCompatActivity {
-    Button confirmButton, cancelButton;
+    private Button confirmButton, cancelButton, getMessage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,7 +15,7 @@ public class confirmEmergencyPage extends AppCompatActivity {
 
         confirmButton = (Button) findViewById(R.id.confirmBnt);
         cancelButton = (Button) findViewById(R.id.cancelBnt);
-
+        getMessage = (Button) findViewById(R.id.getMessage);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,6 +27,14 @@ public class confirmEmergencyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(confirmEmergencyPage.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        getMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(confirmEmergencyPage.this, GetLiveMessage.class);
                 startActivity(intent);
             }
         });

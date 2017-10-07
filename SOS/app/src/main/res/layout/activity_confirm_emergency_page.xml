@@ -9,7 +9,7 @@
     android:background="#ff0000">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="#fff"
         android:orientation="vertical">
@@ -45,12 +45,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/round_bnt"
+            android:background="@drawable/round_btn02"
             android:text="cancel"
             android:textColor="#fff"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"/>
+            android:layout_marginRight="45dp"
+            android:layout_marginBottom="15dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Live message"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            android:background="#A9A9A9"
+            android:textColor="#fff"
+            android:id="@+id/getMessage"/>
     </LinearLayout>
 
 </LinearLayout>
