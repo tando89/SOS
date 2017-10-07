@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Registered successfully",Toast.LENGTH_SHORT).show();
                     userIdRef=databaseReference.child(mAuth.getCurrentUser().getUid());
                     userIdRef.child("name").setValue(name.getText().toString());
-                    verifyEmail();
+                    //TODO: verifyEmail();
                 }
                 registerDialog.dismiss();
             }
