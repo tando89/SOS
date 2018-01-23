@@ -20,7 +20,7 @@ import com.esri.arcgisruntime.mapping.view.MapView;
 public class MapActivity extends AppCompatActivity {
     private MapView mMapView;
     private LocationDisplay mLocationDisplay;
-    private static final int SCALE = 1500;
+    private static final int SCALE = 3500;
     private SpatialReference spatialReference;
     private int requestCode = 2;
     String[] reqPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
@@ -33,7 +33,7 @@ public class MapActivity extends AppCompatActivity {
         ArcGISMap mMap = new ArcGISMap(Basemap.createImagery());
         mMapView.setMap(mMap);
         spatialReference = SpatialReference.create(102100);
-        //testing long and lat of CSUSB
+        //testing points of CSUSB
         Point sbPoint = new Point(-13060292.835, 4053300.978, spatialReference);
         Viewpoint viewpoint = new Viewpoint(sbPoint, SCALE);
         mMapView.setViewpointCenterAsync(sbPoint, SCALE);
